@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { findWords } from "../utils/solver";
 import AppContext from "./AppContext";

@@ -1,5 +1,5 @@
+import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { FC, useState } from "react";
 
 interface BoardCellProps {
   i: number;

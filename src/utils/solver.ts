@@ -26,8 +26,8 @@ const findWordsUtil = (
   if (isWord(str, dictionary)) result.push(str);
 
   // Traverse 8 adjacent cells of boggle[i,j]
-  for (var row = i - 1; row <= i + 1 && row < M; row++)
-    for (var col = j - 1; col <= j + 1 && col < N; col++)
+  for (let row = i - 1; row <= i + 1 && row < M; row++)
+    for (let col = j - 1; col <= j + 1 && col < N; col++)
       if (row >= 0 && col >= 0 && !visited[row][col])
         findWordsUtil(boggle, visited, row, col, str, dictionary, result, M, N);
 
@@ -46,16 +46,13 @@ export const findWords = (
   N: number
 ) => {
   // Mark all characters as not visited
-  var visited = Array.from(Array(M), () => new Array(N).fill(0));
-
-  // Initialize current string
-  var str = "";
+  const visited = Array.from(Array(M), () => new Array(N).fill(0));
 
   // Consider every character and look for all words
   // starting with this character
-  for (var i = 0; i < M; i++)
-    for (var j = 0; j < N; j++)
-      findWordsUtil(boggle, visited, i, j, str, dictionary, result, M, N);
+  for (let i = 0; i < M; i++)
+    for (let j = 0; j < N; j++)
+      findWordsUtil(boggle, visited, i, j, "", dictionary, result, M, N);
 
   return Array.from(new Set(result));
 };
