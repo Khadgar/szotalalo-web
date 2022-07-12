@@ -8,7 +8,32 @@ interface BoardCellProps {
 }
 
 const Cell = styled.div`
-  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 6px solid #444;
+  border-radius: 5px;
+  background: #cccccc;
+`;
+
+const Input = styled.input`
+  border: 1px solid #444;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background: transparent;
+  text-transform: uppercase;
+  font-size: 5em;
+  font-family: monospace;
+  width: 1ch;
+  &:focus {
+    background: #0071b2;
+    color: #ffffff;
+  }
+  &::selection {
+    background: #0071b2;
+    color: #ffffff;
+  }
 `;
 
 const BoardCell: FC<BoardCellProps> = (props: BoardCellProps) => {
@@ -23,7 +48,7 @@ const BoardCell: FC<BoardCellProps> = (props: BoardCellProps) => {
 
   return (
     <Cell>
-      <input
+      <Input
         type="text"
         value={content}
         onChange={(e) => onCellChange(e.target)}
