@@ -15,7 +15,7 @@ const BoardWrapper = styled.div<BoardProps>`
   gap: 10px;
 `;
 
-const Board: FC<BoardProps> = (props: BoardProps) => {
+const Board: FC<BoardProps> = () => {
   const { grid, setGrid, M, N } = useContext(AppContext);
 
   const initGrid = (grid: string[][]) => {

@@ -9,5 +9,6 @@ interface IAppContext {
   N: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const AppContext = createContext<IAppContext>(null!);
 export default AppContext;
