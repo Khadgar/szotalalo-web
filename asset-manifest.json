@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/szotalalo-web/static/css/main.f2c865ab.css",
+    "main.js": "/szotalalo-web/static/js/main.057dd9df.js",
+    "static/js/787.419f0d4a.chunk.js": "/szotalalo-web/static/js/787.419f0d4a.chunk.js",
+    "service-worker.js": "/szotalalo-web/service-worker.js",
+    "index.html": "/szotalalo-web/index.html",
+    "main.f2c865ab.css.map": "/szotalalo-web/static/css/main.f2c865ab.css.map",
+    "main.057dd9df.js.map": "/szotalalo-web/static/js/main.057dd9df.js.map",
+    "787.419f0d4a.chunk.js.map": "/szotalalo-web/static/js/787.419f0d4a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f2c865ab.css",
+    "static/js/main.057dd9df.js"
+  ]
+}
