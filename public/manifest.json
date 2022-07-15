@@ -1,6 +1,6 @@
 {
-  "short_name": "Szotalalo",
-  "name": "Szotalalo WEB",
+  "short_name": "Szótaláló",
+  "name": "Szótaláló WEB",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,7 +19,8 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
+  "display_override": ["window-control-overlay", "minimal-ui"],
+  "display": "fullscreen",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
