@@ -20,7 +20,7 @@ const Result: FC = () => {
   const { dimensions, dict, grid, setDict } = useContext(AppContext);
 
   useEffect(() => {
-    fetch("szotalalo-web/szokereso_dict_1.5.54.txt")
+    fetch("szokereso_dict_1.5.54.txt")
       .then((r) => r.text())
       .then((text) => {
         setDict(new Set(text.split("\r\n")));
