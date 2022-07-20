@@ -16,7 +16,7 @@ const BoardWrapper = styled.div<BoardProps>`
 `;
 
 const Board: FC<BoardProps> = () => {
-  const { grid, setGrid, M, N } = useContext(AppContext);
+  const { dimensions, grid, setGrid } = useContext(AppContext);
 
   const initGrid = (grid: string[][]) => {
     const onCellChange = (i: number, j: number, content: string) => {
@@ -31,6 +31,7 @@ const Board: FC<BoardProps> = () => {
           <BoardCell
             i={i}
             j={j}
+            content={col}
             onCellChange={onCellChange}
             key={`${i}_${j}`}
           />
@@ -40,7 +41,7 @@ const Board: FC<BoardProps> = () => {
   };
 
   return (
-    <BoardWrapper M={M} N={N}>
+    <BoardWrapper M={dimensions.M} N={dimensions.N}>
       {initGrid(grid)}
     </BoardWrapper>
   );
