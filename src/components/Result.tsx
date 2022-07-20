@@ -7,6 +7,7 @@ const ResultContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 const Res = styled.div`
   height: 50px;
@@ -20,7 +21,7 @@ const Result: FC = () => {
   const { dimensions, dict, grid, setDict } = useContext(AppContext);
 
   useEffect(() => {
-    fetch("szokereso_dict_1.5.54.txt")
+    fetch(`${process.env.PUBLIC_URL}/szokereso_dict_1.5.54.txt`)
       .then((r) => r.text())
       .then((text) => {
         setDict(new Set(text.split("\r\n")));
