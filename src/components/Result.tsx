@@ -9,8 +9,16 @@ const ResultContainer = styled.div`
   justify-content: center;
   flex-wrap: wrap;
 `;
+
+const ResultsWrapper = styled.div`
+  display: flex;
+  margin: 4px;
+  flex-direction: column;
+  justify-content: center;
+`;
+
 const Res = styled.div`
-  height: 50px;
+  height: 30px;
   display: flex;
   margin: 4px;
   flex-direction: column;
@@ -21,10 +29,12 @@ const Result: FC = () => {
   const { dimensions, dict, grid, setDict } = useContext(AppContext);
 
   useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/szokereso_dict_1.5.54.txt`)
+    fetch(`${process.env.PUBLIC_URL}/szokereso_dict_1.5.53.txt`)
       .then((r) => r.text())
       .then((text) => {
-        setDict(new Set(text.split("\r\n")));
+        const dictArray = text.split("\r\n");
+        dict.from(dictArray);
+        setDict(dict);
       });
   }, [setDict]);
 
@@ -37,8 +47,17 @@ const Result: FC = () => {
   };
 
   if (grid.every((row) => row.every((col) => col !== null))) {
-    const results = findWords(grid, dict, [], dimensions.M, dimensions.N).sort((a, b) => b.length - a.length);
-    return <ResultContainer>{renderResults(results)}</ResultContainer>;
+    const start = new Date().getTime();
+    const results = findWords(grid, dict, [], dimensions.M, dimensions.N).sort(
+      (a, b) => b.length - a.length
+    );
+    const end = new Date().getTime();
+    return (
+      <ResultsWrapper>
+        Found {results.length} words in {`${end-start}ms`}
+        <ResultContainer>{renderResults(results)}</ResultContainer>
+      </ResultsWrapper>
+    );
   }
 
   return <ResultContainer></ResultContainer>;

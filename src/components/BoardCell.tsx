@@ -46,6 +46,12 @@ const BoardCell: FC<BoardCellProps> = (props: BoardCellProps) => {
     }
   }, [props.content]);
 
+  useEffect(() => {
+    if (!props.content) {
+      setContent("");
+    }
+  }, [props.content]);
+
   const onCellChange = (content: EventTarget & HTMLInputElement) => {
     if (content.value.length <= 1) {
       setContent(content.value);

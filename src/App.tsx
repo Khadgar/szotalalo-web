@@ -6,11 +6,12 @@ import AppContext from "./components/AppContext";
 import "./styles.css";
 import Configure from "./components/Configure";
 import { IDimensions } from "./components/IDimensions";
+import { Trie } from "./utils/Trie";
 
 const App = () => {
   const [dimensions, setDimensions] = useState<IDimensions>({ M: 3, N: 3 });
 
-  const [dict, setDict] = useState<Set<string>>(new Set());
+  const [dict, setDict] = useState<Trie>(new Trie());
 
   const [grid, setGrid] = useState<string[][]>(
     Array(dimensions.M).fill(Array(dimensions.N).fill(null))

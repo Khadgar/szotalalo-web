@@ -1,35 +1,40 @@
-// A given function to check if a given string
-// is present in dictionary. The implementation is
-// naive for simplicity. As per the question
-// dictionary is given to us.
-const isWord = (str: string, dictionary: Set<string>) => dictionary.has(str);
+/* eslint-disable no-debugger */
+import { Trie } from "./Trie";
 
-// A recursive function to print all words present on boggle
+// dictionary is given to us.
+const isWord = (str: string, dictionary: Trie) =>
+  dictionary.search(str.toLocaleLowerCase());
+
+const isValidPrefix = (prefix: string, dictionary: Trie) =>
+  dictionary.isValidPrefix(prefix.toLocaleLowerCase());
+
 const findWordsUtil = (
   boggle: string[][],
   visited: boolean[][],
   i: number,
   j: number,
   str: string,
-  dictionary: Set<string>,
+  dictionary: Trie,
   result: string[],
   M: number,
   N: number
 ) => {
-  // Mark current cell as visited and
-  // append current character to str
   visited[i][j] = true;
   str = str + boggle[i][j];
-
-  // If str is present in dictionary,
-  // then print it
+  
   if (isWord(str, dictionary)) result.push(str);
 
   // Traverse 8 adjacent cells of boggle[i,j]
   for (let row = i - 1; row <= i + 1 && row < M; row++)
     for (let col = j - 1; col <= j + 1 && col < N; col++)
-      if (row >= 0 && col >= 0 && !visited[row][col])
+      if (
+        row >= 0 &&
+        col >= 0 &&
+        !visited[row][col] &&
+        isValidPrefix(str, dictionary)
+      ) {
         findWordsUtil(boggle, visited, row, col, str, dictionary, result, M, N);
+      }
 
   // Erase current character from string and
   // mark visited of current cell as false
@@ -40,7 +45,7 @@ const findWordsUtil = (
 // Prints all words present in dictionary.
 export const findWords = (
   boggle: string[][],
-  dictionary: Set<string>,
+  dictionary: Trie,
   result: string[],
   M: number,
   N: number
@@ -50,9 +55,11 @@ export const findWords = (
 
   // Consider every character and look for all words
   // starting with this character
-  for (let i = 0; i < M; i++)
-    for (let j = 0; j < N; j++)
+  for (let i = 0; i < M; i++) {
+    for (let j = 0; j < N; j++) {
       findWordsUtil(boggle, visited, i, j, "", dictionary, result, M, N);
+    }
+  }
 
   return Array.from(new Set(result));
 };
