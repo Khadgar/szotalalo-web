@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import styled from "styled-components";
-import AppContext from "./AppContext";
+import AppContext, { Languages } from "./AppContext";
 
 interface GridSizeButtonProps {
   selected: boolean;
@@ -25,6 +25,23 @@ const GridSizeButton = styled.div<GridSizeButtonProps>`
   }
 `;
 
+const RandomButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  margin: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  &:hover {
+    cursor: pointer;
+    background: #0071b2;
+    color: #ffffff;
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -32,11 +49,13 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const hunLetters = ["a", "á", "b", "c", "d", "e", "é", "f", "g", "h", "i", "í", "j", "k", "l", "m", "n", "o", "ó", "ö", "ő", "p", "q", "r", "s", "t", "u", "ú", "ü", "ű", "v", "w", "x", "y", "z"];
+const engLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 const Configure: FC = () => {
-  const { dimensions, setDimensions, setGrid } = useContext(AppContext);
+  const { dimensions, setDimensions, setGrid, language, setLanguage } = useContext(AppContext);
   const buttons = ["3x3", "4x4", "5x5", "6x6", "7x7", "8x8"];
 
-  const generateButtons = (buttonsList: string[]) => {
+  const generateGridSizeButtons = (buttonsList: string[]) => {
     return buttonsList.map((btn) => {
       return (
         <GridSizeButton
@@ -45,9 +64,7 @@ const Configure: FC = () => {
           onClick={() => {
             const newDimensions = configureDimensions(btn);
             setDimensions(newDimensions);
-            setGrid(
-              Array(newDimensions.M).fill(Array(newDimensions.N).fill(null))
-            );
+            setGrid(Array(newDimensions.M).fill(Array(newDimensions.N).fill(null)));
           }}
         >
           {btn}
@@ -56,7 +73,51 @@ const Configure: FC = () => {
     });
   };
 
-  return <Container>{generateButtons(buttons)}</Container>;
+  const generateLanguageSelector = () => {
+    return (
+      <label>
+        Language:
+        <select value={language} onChange={(event) => {
+            setLanguage(event.target.value as Languages)
+          }}>
+          <option value="ENG">English</option>
+          <option value="HUN">Hungarian</option>
+        </select>
+      </label>
+    );
+  };
+
+  const getAlphabet = (lang: Languages) => {
+    switch (lang) {
+      case "ENG":
+        return engLetters;
+      case "HUN":
+        return hunLetters;
+      default:
+        return engLetters;
+    }
+  };
+
+  const generateRandomGrid = () => {
+    const letters = getAlphabet(language);
+
+    let randomArray = Array(dimensions.M).fill(Array(dimensions.N).fill(null));
+    for (let i = 0; i < dimensions.M; i++) {
+      for (let j = 0; j < dimensions.N; j++) {
+        randomArray[i][j] = letters[(letters.length * Math.random()) | 0];
+        randomArray = [...randomArray].map((row) => [...row]);
+      }
+    }
+    setGrid(randomArray);
+  };
+
+  return (
+    <Container>
+      {generateGridSizeButtons(buttons)}
+      <RandomButton onClick={generateRandomGrid}>Rand</RandomButton>
+      {generateLanguageSelector()}
+    </Container>
+  );
 };
 
 const configureDimensions = (configuredDimension: string) => {

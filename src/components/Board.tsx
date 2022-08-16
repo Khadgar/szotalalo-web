@@ -27,15 +27,7 @@ const Board: FC<BoardProps> = () => {
 
     return grid.map((row: string[], i: number) => {
       return row.map((col: string, j: number) => {
-        return (
-          <BoardCell
-            i={i}
-            j={j}
-            content={col}
-            onCellChange={onCellChange}
-            key={`${i}_${j}`}
-          />
-        );
+        return <BoardCell i={i} j={j} content={col} onCellChange={onCellChange} key={`${i}_${j}`} />;
       });
     });
   };

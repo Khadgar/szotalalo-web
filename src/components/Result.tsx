@@ -1,7 +1,8 @@
 import React, { FC, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { findWords } from "../utils/solver";
-import AppContext from "./AppContext";
+import { Trie } from "../utils/Trie";
+import AppContext, { Languages } from "./AppContext";
 
 const ResultContainer = styled.div`
   display: flex;
@@ -24,19 +25,31 @@ const Res = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-
+const getDictionaryFilename = (lang: Languages) => {
+  switch (lang) {
+    case "ENG":
+      return "twl06_scrabble_us.txt";
+    case "HUN":
+      return "szokereso_dict_1.5.53.txt";
+    default:
+      return "szokereso_dict_1.5.53.txt";
+  }
+};
 const Result: FC = () => {
-  const { dimensions, dict, grid, setDict } = useContext(AppContext);
+  const { dimensions, dict, grid, language, setDict } = useContext(AppContext);
 
   useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/szokereso_dict_1.5.53.txt`)
+    const dictFile = getDictionaryFilename(language);
+
+    fetch(`${process.env.PUBLIC_URL}/${dictFile}`)
       .then((r) => r.text())
       .then((text) => {
+        const newDict = new Trie();
         const dictArray = text.split("\r\n");
-        dict.from(dictArray);
-        setDict(dict);
+        newDict.from(dictArray);
+        setDict(newDict);
       });
-  }, [setDict]);
+  }, [setDict, language]);
 
   const renderResults = (results: string[]) => {
     return results.map((result: string, i: number) => (
@@ -48,13 +61,11 @@ const Result: FC = () => {
 
   if (grid.every((row) => row.every((col) => col !== null))) {
     const start = new Date().getTime();
-    const results = findWords(grid, dict, [], dimensions.M, dimensions.N).sort(
-      (a, b) => b.length - a.length
-    );
+    const results = findWords(grid, dict, [], dimensions.M, dimensions.N).sort((a, b) => b.length - a.length);
     const end = new Date().getTime();
     return (
       <ResultsWrapper>
-        Found {results.length} words in {`${end-start}ms`}
+        Found {results.length} words in {`${end - start}ms`}
         <ResultContainer>{renderResults(results)}</ResultContainer>
       </ResultsWrapper>
     );

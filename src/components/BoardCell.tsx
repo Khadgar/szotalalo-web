@@ -1,5 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import AppContext from "./AppContext";
 
 interface BoardCellProps {
   i: number;
@@ -39,6 +40,7 @@ const Input = styled.input`
 
 const BoardCell: FC<BoardCellProps> = (props: BoardCellProps) => {
   const [content, setContent] = useState<string>("");
+  const { grid } = useContext(AppContext);
 
   useEffect(() => {
     if (!props.content) {
@@ -47,10 +49,10 @@ const BoardCell: FC<BoardCellProps> = (props: BoardCellProps) => {
   }, [props.content]);
 
   useEffect(() => {
-    if (!props.content) {
-      setContent("");
+    if (grid[props.i][props.j]) {
+      setContent(grid[props.i][props.j]);
     }
-  }, [props.content]);
+  }, [grid]);
 
   const onCellChange = (content: EventTarget & HTMLInputElement) => {
     if (content.value.length <= 1) {
@@ -61,11 +63,7 @@ const BoardCell: FC<BoardCellProps> = (props: BoardCellProps) => {
 
   return (
     <Cell>
-      <Input
-        type="text"
-        value={content}
-        onChange={(e) => onCellChange(e.target)}
-      />
+      <Input type="text" value={content} onChange={(e) => onCellChange(e.target)} />
     </Cell>
   );
 };
