@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Board from "./components/Board";
 import Result from "./components/Result";
-import AppContext, { Languages } from "./components/AppContext";
+import AppContext, { Languages } from "./contexts/AppContext";
 
 import "./styles.css";
 import Configure from "./components/Configure";
@@ -31,7 +31,7 @@ const App = () => {
         dimensions,
         setDimensions,
         language,
-        setLanguage
+        setLanguage,
       }}
     >
       <div className="App">

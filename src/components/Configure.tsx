@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import styled from "styled-components";
-import AppContext, { Languages } from "./AppContext";
+import AppContext, { Languages } from "../contexts/AppContext";
 
 interface GridSizeButtonProps {
   selected: boolean;
@@ -77,9 +77,12 @@ const Configure: FC = () => {
     return (
       <label>
         Language:
-        <select value={language} onChange={(event) => {
-            setLanguage(event.target.value as Languages)
-          }}>
+        <select
+          value={language}
+          onChange={(event) => {
+            setLanguage(event.target.value as Languages);
+          }}
+        >
           <option value="ENG">English</option>
           <option value="HUN">Hungarian</option>
         </select>

@@ -2,7 +2,7 @@ import React, { FC, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { findWords } from "../utils/solver";
 import { Trie } from "../utils/Trie";
-import AppContext, { Languages } from "./AppContext";
+import AppContext, { Languages } from "../contexts/AppContext";
 
 const ResultContainer = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import AppContext from "./AppContext";
+import AppContext from "../contexts/AppContext";
 
 interface BoardCellProps {
   i: number;

@@ -1,7 +1,7 @@
 import React, { FC, useContext } from "react";
 import styled from "styled-components";
 import BoardCell from "./BoardCell";
-import AppContext from "./AppContext";
+import AppContext from "../contexts/AppContext";
 
 interface BoardProps {
   M: number;
