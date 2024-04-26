@@ -54,11 +54,11 @@ const Container = styled.div`
 const getDictionaryFilename = (lang: Languages) => {
   switch (lang) {
     case "ENG":
-      return "twl06_scrabble_us.txt";
+      return "twl06_scrabble_us.json";
     case "HUN":
-      return "szokereso_dict_1.5.53.txt";
+      return "szokereso_dict_1.5.53.json";
     default:
-      return "szokereso_dict_1.5.53.txt";
+      return "szokereso_dict_1.5.53.json";
   }
 };
 
@@ -72,11 +72,10 @@ const Configure: FC = () => {
     const dictFile = getDictionaryFilename(language);
 
     fetch(`${process.env.PUBLIC_URL}/${dictFile}`)
-      .then((r) => r.text())
+      .then((r) => r.json())
       .then((text) => {
         const newDict = new Trie();
-        const dictArray = text.split("\r\n");
-        newDict.from(dictArray);
+        newDict.from(text);
         setDict(newDict);
       });
   }, [setDict, language]);
