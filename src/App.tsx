@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Board from "./components/Board";
 import Result from "./components/Result";
 import AppContext, { Languages } from "./contexts/AppContext";
@@ -17,9 +17,7 @@ const App = () => {
 
   const [language, setLanguage] = useState<Languages>("HUN");
 
-  useEffect(() => {
-    setGrid(Array(dimensions.M).fill(Array(dimensions.N).fill(null)));
-  }, [dimensions]);
+  const [results, setResults] = useState<string[]>([]);
 
   return (
     <AppContext.Provider
@@ -32,6 +30,8 @@ const App = () => {
         setDimensions,
         language,
         setLanguage,
+        results,
+        setResults,
       }}
     >
       <div className="App">

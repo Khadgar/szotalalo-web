@@ -1,6 +1,8 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import styled from "styled-components";
 import AppContext, { Languages } from "../contexts/AppContext";
+import { findWords } from "../utils/solver";
+import { Trie } from "../utils/Trie";
 
 interface GridSizeButtonProps {
   selected: boolean;
@@ -49,11 +51,42 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const getDictionaryFilename = (lang: Languages) => {
+  switch (lang) {
+    case "ENG":
+      return "twl06_scrabble_us.txt";
+    case "HUN":
+      return "szokereso_dict_1.5.53.txt";
+    default:
+      return "szokereso_dict_1.5.53.txt";
+  }
+};
+
 const hunLetters = ["a", "á", "b", "c", "d", "e", "é", "f", "g", "h", "i", "í", "j", "k", "l", "m", "n", "o", "ó", "ö", "ő", "p", "q", "r", "s", "t", "u", "ú", "ü", "ű", "v", "w", "x", "y", "z"];
 const engLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 const Configure: FC = () => {
-  const { dimensions, setDimensions, setGrid, language, setLanguage } = useContext(AppContext);
+  const { dimensions, setDict, dict, setDimensions, grid, setGrid, language, setLanguage, setResults } = useContext(AppContext);
   const buttons = ["3x3", "4x4", "5x5", "6x6", "7x7", "8x8"];
+
+  useEffect(() => {
+    const dictFile = getDictionaryFilename(language);
+
+    fetch(`${process.env.PUBLIC_URL}/${dictFile}`)
+      .then((r) => r.text())
+      .then((text) => {
+        const newDict = new Trie();
+        const dictArray = text.split("\r\n");
+        newDict.from(dictArray);
+        setDict(newDict);
+      });
+  }, [setDict, language]);
+
+  useEffect(() => {
+    if (grid.every((row) => row.every((col) => col !== null))) {
+      const results = findWords(grid, dict, [], dimensions.M, dimensions.N).sort((a, b) => b.length - a.length);
+      setResults(results);
+    }
+  }, [grid]);
 
   const generateGridSizeButtons = (buttonsList: string[]) => {
     return buttonsList.map((btn) => {
@@ -65,6 +98,7 @@ const Configure: FC = () => {
             const newDimensions = configureDimensions(btn);
             setDimensions(newDimensions);
             setGrid(Array(newDimensions.M).fill(Array(newDimensions.N).fill(null)));
+            setResults([]);
           }}
         >
           {btn}

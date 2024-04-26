@@ -12,6 +12,8 @@ interface IAppContext {
   setDimensions: React.Dispatch<React.SetStateAction<IDimensions>>;
   language: Languages;
   setLanguage: React.Dispatch<React.SetStateAction<Languages>>;
+  results: string[];
+  setResults: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
