@@ -143,8 +143,11 @@ const Configure: FC = () => {
 
   useEffect(() => {
     const dictFile = getDictionaryFilename(language);
-
-    fetch(`${process.env.PUBLIC_URL}/${dictFile}`)
+    const url =
+      process.env.NODE_ENV === 'production'
+        ? `./${dictFile}`
+        : `${process.env.PUBLIC_URL}/${dictFile}`;
+    fetch(url)
       .then((r) => r.json())
       .then((text) => {
         const newDict = new Trie();
