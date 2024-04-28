@@ -2,7 +2,7 @@
   "name": "szotalalo-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://khadgar.github.io/szotalalo-web",
+  "homepage": ".",
   "dependencies": {
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
