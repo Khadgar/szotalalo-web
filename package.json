@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "webpack serve --config webpack.dev.config.js",
-    "test": "jest --coverages",
+    "test": "jest --coverage",
     "lint": "eslint .",
     "build": "webpack --config webpack.prod.config.js",
     "predeploy": "npm run build",
