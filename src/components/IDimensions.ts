@@ -1,4 +1,4 @@
 export interface IDimensions {
-  M: number;
-  N: number;
+  m: number;
+  n: number;
 }

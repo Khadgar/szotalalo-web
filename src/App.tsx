@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import Board from "./components/Board";
-import Result from "./components/Result";
-import AppContext, { Languages } from "./contexts/AppContext";
-
-import "./styles.css";
-import Configure from "./components/Configure";
-import { IDimensions } from "./components/IDimensions";
-import { Trie } from "./utils/Trie";
+import React, { useState } from 'react';
+import Board from './components/Board/Board';
+import Result from './components/Result/Result';
+import AppContext, { Languages } from './contexts/AppContext';
+import './styles.css';
+import Configure from './components/Configure/Configure';
+import { IDimensions } from './components/IDimensions';
+import { Trie } from './utils/Trie';
 
 const App = () => {
-  const [dimensions, setDimensions] = useState<IDimensions>({ M: 3, N: 3 });
+  const [dimensions, setDimensions] = useState<IDimensions>({ m: 3, n: 3 });
 
   const [dict, setDict] = useState<Trie>(new Trie());
 
-  const [grid, setGrid] = useState<string[][]>(Array(dimensions.M).fill(Array(dimensions.N).fill(null)));
+  const [grid, setGrid] = useState<string[][]>(
+    Array(dimensions.m).fill(Array(dimensions.n).fill(null))
+  );
 
-  const [language, setLanguage] = useState<Languages>("HUN");
+  const [language, setLanguage] = useState<Languages>('HUN');
 
   const [results, setResults] = useState<string[]>([]);
 
@@ -36,7 +37,7 @@ const App = () => {
     >
       <div className="App">
         <Configure />
-        <Board M={dimensions.M} N={dimensions.N} />
+        <Board />
         <Result />
       </div>
     </AppContext.Provider>

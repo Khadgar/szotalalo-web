@@ -1,9 +1,9 @@
-import { createContext } from "react";
-import { Trie } from "../utils/Trie";
-import { IDimensions } from "../components/IDimensions";
+import { createContext } from 'react';
+import { Trie } from '../utils/Trie';
+import { IDimensions } from '../components/IDimensions';
 
-export type Languages = "ENG" | "HUN";
-interface IAppContext {
+export type Languages = 'ENG' | 'HUN';
+export interface IAppContext {
   grid: string[][];
   setGrid: React.Dispatch<React.SetStateAction<string[][]>>;
   dict: Trie;

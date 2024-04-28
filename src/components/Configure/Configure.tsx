@@ -1,8 +1,8 @@
-import React, { FC, useContext, useEffect } from "react";
-import styled from "styled-components";
-import AppContext, { Languages } from "../contexts/AppContext";
-import { findWords } from "../utils/solver";
-import { Trie } from "../utils/Trie";
+import React, { FC, useContext, useEffect } from 'react';
+import styled from 'styled-components';
+import AppContext, { Languages } from '../../contexts/AppContext';
+import { findWords } from '../../utils/solver';
+import { Trie } from '../../utils/Trie';
 
 interface GridSizeButtonProps {
   selected: boolean;
@@ -18,8 +18,8 @@ const GridSizeButton = styled.div<GridSizeButtonProps>`
   margin: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background: ${(p) => (p.selected ? "#0071b2" : "#ffffff")};
-  color: ${(p) => (p.selected ? "#ffffff" : "#000000")};
+  background: ${(p) => (p.selected ? '#0071b2' : '#ffffff')};
+  color: ${(p) => (p.selected ? '#ffffff' : '#000000')};
   &:hover {
     cursor: pointer;
     background: #0071b2;
@@ -53,20 +53,93 @@ const Container = styled.div`
 
 const getDictionaryFilename = (lang: Languages) => {
   switch (lang) {
-    case "ENG":
-      return "twl06_scrabble_us.json";
-    case "HUN":
-      return "szokereso_dict_1.5.53.json";
+    case 'ENG':
+      return 'twl06_scrabble_us.json';
+    case 'HUN':
+      return 'szokereso_dict_1.5.53.json';
     default:
-      return "szokereso_dict_1.5.53.json";
+      return 'szokereso_dict_1.5.53.json';
   }
 };
 
-const hunLetters = ["a", "á", "b", "c", "d", "e", "é", "f", "g", "h", "i", "í", "j", "k", "l", "m", "n", "o", "ó", "ö", "ő", "p", "q", "r", "s", "t", "u", "ú", "ü", "ű", "v", "w", "x", "y", "z"];
-const engLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const hunLetters = [
+  'a',
+  'á',
+  'b',
+  'c',
+  'd',
+  'e',
+  'é',
+  'f',
+  'g',
+  'h',
+  'i',
+  'í',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'ó',
+  'ö',
+  'ő',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'ú',
+  'ü',
+  'ű',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+];
+const engLetters = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+];
 const Configure: FC = () => {
-  const { dimensions, setDict, dict, setDimensions, grid, setGrid, language, setLanguage, setResults } = useContext(AppContext);
-  const buttons = ["3x3", "4x4", "5x5", "6x6", "7x7", "8x8"];
+  const {
+    dimensions,
+    setDict,
+    dict,
+    setDimensions,
+    grid,
+    setGrid,
+    language,
+    setLanguage,
+    setResults,
+  } = useContext(AppContext);
+  const buttons = ['3x3', '4x4', '5x5', '6x6', '7x7', '8x8'];
 
   useEffect(() => {
     const dictFile = getDictionaryFilename(language);
@@ -82,21 +155,24 @@ const Configure: FC = () => {
 
   useEffect(() => {
     if (grid.every((row) => row.every((col) => col !== null))) {
-      const results = findWords(grid, dict, [], dimensions.M, dimensions.N).sort((a, b) => b.length - a.length);
+      const results = findWords(grid, dict, [], dimensions.m, dimensions.n).sort(
+        (a, b) => b.length - a.length
+      );
       setResults(results);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grid]);
 
   const generateGridSizeButtons = (buttonsList: string[]) => {
     return buttonsList.map((btn) => {
       return (
         <GridSizeButton
-          selected={btn === `${dimensions.M}x${dimensions.N}`}
+          selected={btn === `${dimensions.m}x${dimensions.n}`}
           key={btn}
           onClick={() => {
             const newDimensions = configureDimensions(btn);
             setDimensions(newDimensions);
-            setGrid(Array(newDimensions.M).fill(Array(newDimensions.N).fill(null)));
+            setGrid(Array(newDimensions.m).fill(Array(newDimensions.n).fill(null)));
             setResults([]);
           }}
         >
@@ -125,9 +201,9 @@ const Configure: FC = () => {
 
   const getAlphabet = (lang: Languages) => {
     switch (lang) {
-      case "ENG":
+      case 'ENG':
         return engLetters;
-      case "HUN":
+      case 'HUN':
         return hunLetters;
       default:
         return engLetters;
@@ -137,9 +213,9 @@ const Configure: FC = () => {
   const generateRandomGrid = () => {
     const letters = getAlphabet(language);
 
-    let randomArray = Array(dimensions.M).fill(Array(dimensions.N).fill(null));
-    for (let i = 0; i < dimensions.M; i++) {
-      for (let j = 0; j < dimensions.N; j++) {
+    let randomArray = Array(dimensions.m).fill(Array(dimensions.n).fill(null));
+    for (let i = 0; i < dimensions.m; i++) {
+      for (let j = 0; j < dimensions.n; j++) {
         randomArray[i][j] = letters[(letters.length * Math.random()) | 0];
         randomArray = [...randomArray].map((row) => [...row]);
       }
@@ -158,20 +234,20 @@ const Configure: FC = () => {
 
 const configureDimensions = (configuredDimension: string) => {
   switch (configuredDimension) {
-    case "3x3":
-      return { M: 3, N: 3 };
-    case "4x4":
-      return { M: 4, N: 4 };
-    case "5x5":
-      return { M: 5, N: 5 };
-    case "6x6":
-      return { M: 6, N: 6 };
-    case "7x7":
-      return { M: 7, N: 7 };
-    case "8x8":
-      return { M: 8, N: 8 };
+    case '3x3':
+      return { m: 3, n: 3 };
+    case '4x4':
+      return { m: 4, n: 4 };
+    case '5x5':
+      return { m: 5, n: 5 };
+    case '6x6':
+      return { m: 6, n: 6 };
+    case '7x7':
+      return { m: 7, n: 7 };
+    case '8x8':
+      return { m: 8, n: 8 };
     default:
-      return { M: 3, N: 3 };
+      return { m: 3, n: 3 };
   }
 };
 
