@@ -85,6 +85,9 @@ module.exports = {
       patterns: [
         { from: 'public/szokereso_dict_1.5.53.json', to: './' },
         { from: 'public/twl06_scrabble_us.json', to: './' },
+        { from: 'public/manifest.json', to: './' },
+        { from: 'public/logo192.png', to: './' },
+        { from: 'public/logo512.png', to: './' },
       ],
     }),
   ],
