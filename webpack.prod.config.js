@@ -7,6 +7,7 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -79,6 +80,12 @@ module.exports = {
     new NodePolyfillPlugin(),
     new Dotenv({
       systemvars: true,
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: 'public/szokereso_dict_1.5.53.json', to: './' },
+        { from: 'public/twl06_scrabble_us.json', to: './' },
+      ],
     }),
   ],
 };
