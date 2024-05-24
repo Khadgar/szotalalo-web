@@ -1,55 +1,8 @@
 import React, { FC, useContext, useEffect } from 'react';
-import styled from 'styled-components';
+import { Button, Flex, Group, Select, Text } from '@mantine/core';
 import AppContext, { Languages } from '../../contexts/AppContext';
 import { findWords } from '../../utils/solver';
 import { Trie } from '../../utils/Trie';
-
-interface GridSizeButtonProps {
-  selected: boolean;
-}
-
-const GridSizeButton = styled.div<GridSizeButtonProps>`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 30px;
-  margin: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: ${(p) => (p.selected ? '#0071b2' : '#ffffff')};
-  color: ${(p) => (p.selected ? '#ffffff' : '#000000')};
-  &:hover {
-    cursor: pointer;
-    background: #0071b2;
-    color: #ffffff;
-  }
-`;
-
-const RandomButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 30px;
-  margin: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-    background: #0071b2;
-    color: #ffffff;
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
 
 const getDictionaryFilename = (lang: Languages) => {
   switch (lang) {
@@ -169,9 +122,11 @@ const Configure: FC = () => {
   const generateGridSizeButtons = (buttonsList: string[]) => {
     return buttonsList.map((btn) => {
       return (
-        <GridSizeButton
-          selected={btn === `${dimensions.m}x${dimensions.n}`}
+        <Button
           key={btn}
+          variant={btn === `${dimensions.m}x${dimensions.n}` ? 'filled' : 'outline'}
+          size="xs"
+          radius="xs"
           onClick={() => {
             const newDimensions = configureDimensions(btn);
             setDimensions(newDimensions);
@@ -180,25 +135,24 @@ const Configure: FC = () => {
           }}
         >
           {btn}
-        </GridSizeButton>
+        </Button>
       );
     });
   };
 
   const generateLanguageSelector = () => {
     return (
-      <label>
-        Language:
-        <select
-          value={language}
-          onChange={(event) => {
-            setLanguage(event.target.value as Languages);
-          }}
-        >
-          <option value="ENG">English</option>
-          <option value="HUN">Hungarian</option>
-        </select>
-      </label>
+      <Select
+        label="Language"
+        data={[
+          { value: 'ENG', label: 'English' },
+          { value: 'HUN', label: 'Hungarian' },
+        ]}
+        value={language}
+        onChange={(value) => {
+          setLanguage(value as Languages);
+        }}
+      />
     );
   };
 
@@ -227,11 +181,27 @@ const Configure: FC = () => {
   };
 
   return (
-    <Container>
-      {generateGridSizeButtons(buttons)}
-      <RandomButton onClick={generateRandomGrid}>Rand</RandomButton>
-      {generateLanguageSelector()}
-    </Container>
+    <Flex direction={{ base: 'column' }} gap={{ base: 'sm' }} justify={{ sm: 'center' }}>
+      <Flex direction={{ base: 'column' }} gap={{ base: 'sm' }} justify={{ sm: 'center' }}>
+        <Text size="md">Grid Size</Text>
+        <Group>{generateGridSizeButtons(buttons)}</Group>
+      </Flex>
+      <Flex direction={{ base: 'column' }} gap={{ base: 'sm' }} justify={{ sm: 'center' }}>
+        <Text size="md">Randomize Board</Text>
+        <Group>
+          <Button
+            variant="gradient"
+            size="xs"
+            radius="xs"
+            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+            onClick={generateRandomGrid}
+          >
+            Rand
+          </Button>
+        </Group>
+      </Flex>
+      <Group>{generateLanguageSelector()}</Group>
+    </Flex>
   );
 };
 

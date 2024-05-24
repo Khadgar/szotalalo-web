@@ -28,7 +28,7 @@ const selectRect = (
     pointers[0][0] + svgRect.left,
     pointers[0][1] + svgRect.top
   );
-  return d3.select(element).datum() as IGridCell;
+  if (element) return d3.select(element).datum() as IGridCell;
 };
 
 const drawArrow = (
@@ -36,17 +36,28 @@ const drawArrow = (
   from: ICoordinates,
   to: ICoordinates,
   cellSize: number,
-  gap: number
+  gap: number,
+  offset: number = 20
 ) => {
   const fromX = from.j * (cellSize + gap / 2) + cellSize / 2 + 1;
   const fromY = from.i * (cellSize + gap / 2) + cellSize / 2 + 1;
   const toX = to.j * (cellSize + gap / 2) + cellSize / 2 + 1;
   const toY = to.i * (cellSize + gap / 2) + cellSize / 2 + 1;
+
+  const dx = toX - fromX;
+  const dy = toY - fromY;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ratio = (len - offset) / len;
+
+  const newEndX = fromX + ratio * dx;
+  const newEndY = fromY + ratio * dy;
+
   // Draw a line between the two cells
   const lineGenerator = d3.line();
+
   const pathData = lineGenerator([
-    [fromX, fromY],
-    [toX, toY],
+    [fromX + (offset * dx) / len, fromY + (offset * dy) / len],
+    [newEndX, newEndY],
   ]);
 
   svgObj
@@ -121,11 +132,13 @@ export function addSvgEventListeners(
   setSelectionInProgressHandler: React.Dispatch<React.SetStateAction<boolean>>,
   selectionInProgress: boolean,
   setSelectedCellsHandler: React.Dispatch<React.SetStateAction<ICoordinates[]>>,
-  selectedCells: ICoordinates[]
+  selectedCells: ICoordinates[],
+  arrowOffset: number = 20
 ) {
   return svgObj
     .attr('width', (cellSize + gap / 2) * gridData[0].length)
     .attr('height', (cellSize + gap / 2) * gridData[0].length)
+    .style('touch-action', 'none')
     .on('mouseleave', function () {
       if (selectionInProgress) {
         const newArray = gridData.map((row) => row.map((cell) => ({ ...cell, selected: false })));
@@ -174,7 +187,8 @@ export function addSvgEventListeners(
                 selectedCells[selectedCells.length - 1],
                 { i: data.i, j: data.j },
                 cellSize,
-                gap
+                gap,
+                arrowOffset
               );
               newArray[data.i][data.j].selected = true;
               setSelectedCellsHandler([...selectedCells, { i: data.i, j: data.j }]);
@@ -229,7 +243,8 @@ export function createCells(
   setSelectionInProgressHandler: React.Dispatch<React.SetStateAction<boolean>>,
   selectionInProgress: boolean,
   setSelectedCellsHandler: React.Dispatch<React.SetStateAction<ICoordinates[]>>,
-  selectedCells: ICoordinates[]
+  selectedCells: ICoordinates[],
+  arrowOffset: number = 20
 ) {
   const cells = rows
     .selectAll('rect')
@@ -239,9 +254,9 @@ export function createCells(
     .attr('width', cellSize)
     .attr('height', cellSize)
     .attr('fill', function (data) {
-      return data.selected ? 'blue' : 'white';
+      return data.selected ? '#00a2e8' : '#00efd1';
     })
-    .attr('stroke', '#2378ae')
+    .attr('stroke', '#083863')
     .attr('rx', '4')
     .on('mousedown', function (event, data) {
       const newArray = gridData.map((row) => row.map((cell) => ({ ...cell })));
@@ -264,7 +279,8 @@ export function createCells(
             selectedCells[selectedCells.length - 1],
             { i: data.i, j: data.j },
             cellSize,
-            gap
+            gap,
+            arrowOffset
           );
 
           newArray[data.i][data.j].selected = true;

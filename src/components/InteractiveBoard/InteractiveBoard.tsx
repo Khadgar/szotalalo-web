@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import { Container, Flex, Text } from '@mantine/core';
 import AppContext from '../../contexts/AppContext';
 import { ICoordinates } from '../ICoordinates';
 import {
@@ -10,15 +10,6 @@ import {
   createRows,
   createSvgCanvas,
 } from '../../utils/SvgUtils';
-
-const BoardWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  touch-action: none;
-  align-items: stretch;
-  width: 100%;
-  height: 100%;
-`;
 
 const InteractiveBoard: FC = () => {
   const { grid } = useContext(AppContext);
@@ -42,6 +33,7 @@ const InteractiveBoard: FC = () => {
       const width = wrapperRef.current!.clientWidth - gridData[0].length * (gap / 2);
       const height = wrapperRef.current!.clientHeight - gridData[0].length * (gap / 2);
       const cellSize = Math.min(width / gridData[0].length, height / gridData.length); // size of each cell
+      const arrowOffset = grid.length === 3 || grid.length === 4 ? 40 : 20;
       if (svg) {
         addSvgEventListeners(
           svg,
@@ -52,7 +44,8 @@ const InteractiveBoard: FC = () => {
           setSelectionInProgress,
           selectionInProgress,
           setSelectedCells,
-          selectedCells
+          selectedCells,
+          arrowOffset
         );
 
         const rows = createRows(svg, gridData, cellSize, gap);
@@ -66,7 +59,8 @@ const InteractiveBoard: FC = () => {
           setSelectionInProgress,
           selectionInProgress,
           setSelectedCells,
-          selectedCells
+          selectedCells,
+          arrowOffset
         );
       }
     };
@@ -81,9 +75,19 @@ const InteractiveBoard: FC = () => {
   }, [grid, gridData, selectedCells, selectionInProgress]);
 
   return (
-    <BoardWrapper ref={wrapperRef}>
-      <svg id="board" ref={ref}></svg>
-    </BoardWrapper>
+    <Flex
+      direction={{ base: 'column' }}
+      gap={{ base: 'sm' }}
+      justify={{ sm: 'center' }}
+      ref={wrapperRef}
+    >
+      <Container h={10}>
+        <Text size="md">{selectedCells.map((coord) => grid[coord.i][coord.j]).join('')}</Text>
+      </Container>
+      <Container fluid h={500} mih={360} mah={500} style={{ padding: 0 }}>
+        <svg id="board" ref={ref}></svg>
+      </Container>
+    </Flex>
   );
 };
 
