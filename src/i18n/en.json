@@ -1,0 +1,59 @@
+{
+  "common": {
+    "appTitle": "Szótaláló",
+    "solver": "Solver",
+    "game": "Game",
+    "language": "Language",
+    "dictionary": "Dictionary",
+    "dict.hu": "Hungarian",
+    "dict.en": "English",
+    "theme.toggle": "Toggle theme"
+  },
+  "solver": {
+    "size": "Size",
+    "solve": "Solve",
+    "foundCount_one": "{{count}} word",
+    "foundCount_other": "{{count}} words",
+    "foundWords": "Found words",
+    "letters": "{{count}} letters",
+    "fillHint": "Fill the grid and press Solve."
+  },
+  "setup": {
+    "title": "Game setup",
+    "playerCount": "Number of players",
+    "playerLabel": "Player {{n}}",
+    "gridSize": "Grid size",
+    "time": "Time",
+    "min": "{{n}} min",
+    "unlimited": "Unlimited",
+    "dictionary": "Dictionary",
+    "start": "Start game"
+  },
+  "play": {
+    "playerOf": "{{name}} ({{current}}/{{total}})",
+    "score": "Score: {{value}}",
+    "unlimitedTime": "Unlimited time",
+    "wordsFound": "Words found",
+    "wordsHint": "Swipe letters on the board to make words.",
+    "tooShort": "Too short",
+    "alreadyFound": "Already found",
+    "notAWord": "Not a word",
+    "notOnBoard": "Not on board",
+    "scored": "+{{points}} {{word}}",
+    "giveUp": "Give up / Next player",
+    "finish": "Finish game"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "rank": "#",
+    "player": "Player",
+    "words": "Words",
+    "score": "Score",
+    "noWords": "No words found.",
+    "playAgain": "Play again",
+    "playerScore": "{{name}} — {{score}} pts"
+  },
+  "errors": {
+    "dictLoadFailed": "Failed to load dictionary"
+  }
+}
