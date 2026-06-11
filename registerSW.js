@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/szotalalo-web/sw.js', { scope: '/szotalalo-web/' })})}
