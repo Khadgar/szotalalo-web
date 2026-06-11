@@ -27,6 +27,11 @@
     "min": "{{n}} perc",
     "unlimited": "Korlátlan",
     "dictionary": "Szótár",
+    "minWordLength": "Minimum szóhossz",
+    "minLen": {
+      "gt2": "> 2 betű",
+      "gt3": "> 3 betű"
+    },
     "start": "Játék indítása"
   },
   "play": {
@@ -35,13 +40,18 @@
     "unlimitedTime": "Korlátlan idő",
     "wordsFound": "Talált szavak",
     "wordsHint": "Húzd végig az ujjad a betűkön, hogy szavakat alkoss.",
-    "tooShort": "Túl rövid",
+    "tooShort": "Túl rövid (min {{min}})",
     "alreadyFound": "Már megvan",
     "notAWord": "Nem szó",
     "notOnBoard": "Nincs a táblán",
     "scored": "+{{points}} {{word}}",
     "giveUp": "Feladom / Következő játékos",
-    "finish": "Játék vége"
+    "finish": "Játék vége",
+    "finishGame": "Játék befejezése mindenkinek",
+    "finishConfirmTitle": "Biztosan befejezed?",
+    "finishConfirmBody": "Ez minden játékos számára befejezi a meccset és megmutatja az eredményeket. A hátralévő játékosok nem kapnak kört.",
+    "finishConfirmYes": "Befejezés",
+    "finishConfirmNo": "Mégse"
   },
   "leaderboard": {
     "title": "Eredménytábla",
@@ -51,7 +61,11 @@
     "score": "Pont",
     "noWords": "Nincs talált szó.",
     "playAgain": "Új játék",
-    "playerScore": "{{name}} — {{score}} pont"
+    "playerScore": "{{name}} — {{score}} pont",
+    "allWordsTitle": "Az összes lehetséges szó",
+    "allWordsSummary": "{{found}}/{{total}} szó megtalálva · {{points}} pont elérhető",
+    "allWordsLoading": "Tábla megfejtése…",
+    "allWordsEmpty": "Ezen a táblán nem alkotható szó."
   },
   "errors": {
     "dictLoadFailed": "A szótár betöltése nem sikerült"

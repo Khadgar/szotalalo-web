@@ -17,6 +17,7 @@ import {
   Button,
   Group,
   LoadingOverlay,
+  Modal,
   Paper,
   Progress,
   ScrollArea,
@@ -25,6 +26,7 @@ import {
   Text,
   Title,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../store';
@@ -50,7 +52,10 @@ export default function GamePlay() {
   const status = useStore((s) => s.game.status);
   const tickTimer = useStore((s) => s.tickTimer);
   const advancePlayer = useStore((s) => s.advancePlayer);
+  const finishGame = useStore((s) => s.finishGame);
   const addFoundWord = useStore((s) => s.addFoundWord);
+
+  const [confirmOpen, { open: openConfirm, close: closeConfirm }] = useDisclosure(false);
 
   const { trie: dict, loading } = useDict(config?.dictionary ?? 'en');
 
@@ -75,7 +80,8 @@ export default function GamePlay() {
   const onWordEntered = (word: string, _path: { i: number; j: number }[]) => {
     if (!dict) return;
     const w = word.toLocaleLowerCase('hu-HU');
-    if (w.length < 3) return flash(t('play.tooShort'));
+    const minLen = config.minWordLength;
+    if ([...w].length < minLen) return flash(t('play.tooShort', { min: minLen }));
     if (myWords.includes(w)) return flash(t('play.alreadyFound'));
     if (!dict.search(w)) return flash(t('play.notAWord'));
     if (!findPathForWord(grid, w)) return flash(t('play.notOnBoard'));
@@ -128,9 +134,16 @@ export default function GamePlay() {
             ref={flashRef}
             style={{ height: 24, textAlign: 'center', transition: 'opacity .3s', opacity: 0 }}
           />
-          <Button color="red" variant="light" onClick={advancePlayer}>
-            {currentPlayer + 1 === players.length ? t('play.finish') : t('play.giveUp')}
-          </Button>
+          <Group grow>
+            <Button color="red" variant="light" onClick={advancePlayer}>
+              {currentPlayer + 1 === players.length ? t('play.finish') : t('play.giveUp')}
+            </Button>
+            {currentPlayer + 1 < players.length && (
+              <Button color="red" onClick={openConfirm}>
+                {t('play.finishGame')}
+              </Button>
+            )}
+          </Group>
         </Stack>
         <Stack>
           <Title order={5}>{t('play.wordsFound')}</Title>
@@ -152,6 +165,30 @@ export default function GamePlay() {
           </Paper>
         </Stack>
       </SimpleGrid>
+      <Modal
+        opened={confirmOpen}
+        onClose={closeConfirm}
+        title={t('play.finishConfirmTitle')}
+        centered
+      >
+        <Stack>
+          <Text>{t('play.finishConfirmBody')}</Text>
+          <Group justify="flex-end">
+            <Button variant="default" onClick={closeConfirm}>
+              {t('play.finishConfirmNo')}
+            </Button>
+            <Button
+              color="red"
+              onClick={() => {
+                closeConfirm();
+                finishGame();
+              }}
+            >
+              {t('play.finishConfirmYes')}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </div>
   );
 }
