@@ -37,6 +37,12 @@ export default function GameSetup() {
   ]);
   const [size, setSize] = useState<number>(4);
   const [time, setTime] = useState<TimeLimit>(180);
+  const [minLen, setMinLen] = useState<number>(3);
+
+  const MIN_LENGTHS = [
+    { label: t('setup.minLen.gt2'), value: '3' },
+    { label: t('setup.minLen.gt3'), value: '4' },
+  ];
 
   const TIMES: Array<{ label: string; value: TimeLimit }> = [
     { label: t('setup.min', { n: 2 }), value: 120 },
@@ -57,7 +63,13 @@ export default function GameSetup() {
   };
 
   const onStart = () => {
-    startGame({ playerNames: names, size, timeLimit: time, dictionary: dictLang });
+    startGame({
+      playerNames: names,
+      size,
+      timeLimit: time,
+      dictionary: dictLang,
+      minWordLength: minLen,
+    });
     navigate(`/game/play?dict=${dictLang}`);
   };
 
@@ -100,6 +112,15 @@ export default function GameSetup() {
             value={String(time)}
             onChange={(v) => setTime(Number(v) as TimeLimit)}
             data={TIMES.map((t2) => ({ label: t2.label, value: String(t2.value) }))}
+          />
+        </Group>
+        <Group wrap="wrap">
+          <span>{t('setup.minWordLength')}:</span>
+          <SegmentedControl
+            size="xs"
+            value={String(minLen)}
+            onChange={(v) => setMinLen(Number(v))}
+            data={MIN_LENGTHS}
           />
         </Group>
         <Group wrap="wrap">

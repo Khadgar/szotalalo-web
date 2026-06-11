@@ -23,13 +23,21 @@ import Leaderboard from './components/Game/Leaderboard';
 import { useStore } from './store';
 
 /**
- * Renders `children` only when the current game.status matches `require`;
- * otherwise redirects to `redirect`. Prevents users from deep-linking to
- * /game/play or /game/finished without going through setup.
+ * Renders `children` only when the current game.status matches `require`.
+ * Otherwise:
+ *   - if the game has finished, always send the user to /game/finished
+ *     (so ending a match from /game/play lands on the leaderboard, not
+ *     the setup screen);
+ *   - otherwise fall back to `redirect`.
+ * Prevents users from deep-linking to /game/play or /game/finished
+ * without going through setup.
  */
 function GameGuard({ require, redirect, children }: { require: 'playing' | 'finished'; redirect: string; children: JSX.Element }) {
   const status = useStore((s) => s.game.status);
-  if (status !== require) return <Navigate to={redirect} replace />;
+  if (status !== require) {
+    if (status === 'finished') return <Navigate to="/game/finished" replace />;
+    return <Navigate to={redirect} replace />;
+  }
   return children;
 }
 

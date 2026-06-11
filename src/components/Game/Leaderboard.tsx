@@ -10,26 +10,58 @@ import {
   Badge,
   Button,
   Group,
+  Loader,
   Paper,
+  ScrollArea,
   Stack,
   Table,
+  Text,
   Title,
   Container,
 } from '@mantine/core';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../store';
 import { scoreWord, totalScore } from '../../game/scoring';
+import { useDict } from '../../dict/loadDict';
+import { findWords } from '../../game/solver';
 
 export default function Leaderboard() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const grid = useStore((s) => s.game.grid);
+  const config = useStore((s) => s.game.config);
   const players = useStore((s) => s.game.players);
   const resetGame = useStore((s) => s.resetGame);
+
+  const { trie, loading } = useDict(config?.dictionary ?? 'en');
 
   const ranked = [...players]
     .map((p) => ({ ...p, score: totalScore(p.words) }))
     .sort((a, b) => b.score - a.score);
+
+  const foundByAny = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of players) for (const w of p.words) set.add(w);
+    return set;
+  }, [players]);
+
+  const allWords = useMemo(() => {
+    if (!trie || grid.length === 0) return [] as string[];
+    const minLen = config?.minWordLength ?? 3;
+    return findWords(grid, trie)
+      .filter((w) => [...w].length >= minLen)
+      .sort((a, b) => {
+        if (b.length !== a.length) return b.length - a.length;
+        return a.localeCompare(b, 'hu-HU');
+      });
+  }, [trie, grid, config]);
+
+  const totalPossiblePoints = useMemo(
+    () => allWords.reduce((sum, w) => sum + scoreWord(w), 0),
+    [allWords],
+  );
 
   return (
     <Container maw={720}>
@@ -79,6 +111,52 @@ export default function Leaderboard() {
             </Accordion.Item>
           ))}
         </Accordion>
+
+        <Paper withBorder p="sm">
+          <Stack gap="xs">
+            <Group justify="space-between" align="baseline">
+              <Title order={5}>{t('leaderboard.allWordsTitle')}</Title>
+              {!loading && trie && allWords.length > 0 && (
+                <Text size="sm" c="dimmed">
+                  {t('leaderboard.allWordsSummary', {
+                    found: allWords.filter((w) => foundByAny.has(w)).length,
+                    total: allWords.length,
+                    points: totalPossiblePoints,
+                  })}
+                </Text>
+              )}
+            </Group>
+            {loading || !trie ? (
+              <Group gap="xs">
+                <Loader size="sm" />
+                <Text size="sm" c="dimmed">
+                  {t('leaderboard.allWordsLoading')}
+                </Text>
+              </Group>
+            ) : allWords.length === 0 ? (
+              <Text size="sm" c="dimmed">
+                {t('leaderboard.allWordsEmpty')}
+              </Text>
+            ) : (
+              <ScrollArea h="min(440px, 40vh)">
+                <Group gap={6}>
+                  {allWords.map((w) => {
+                    const found = foundByAny.has(w);
+                    return (
+                      <Badge
+                        key={w}
+                        variant={found ? 'filled' : 'light'}
+                        color={found ? 'teal' : 'gray'}
+                      >
+                        {w} (+{scoreWord(w)})
+                      </Badge>
+                    );
+                  })}
+                </Group>
+              </ScrollArea>
+            )}
+          </Stack>
+        </Paper>
 
         <Button
           onClick={() => {

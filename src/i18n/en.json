@@ -27,6 +27,11 @@
     "min": "{{n}} min",
     "unlimited": "Unlimited",
     "dictionary": "Dictionary",
+    "minWordLength": "Minimum word length",
+    "minLen": {
+      "gt2": "> 2 letters",
+      "gt3": "> 3 letters"
+    },
     "start": "Start game"
   },
   "play": {
@@ -35,13 +40,18 @@
     "unlimitedTime": "Unlimited time",
     "wordsFound": "Words found",
     "wordsHint": "Swipe letters on the board to make words.",
-    "tooShort": "Too short",
+    "tooShort": "Too short (min {{min}})",
     "alreadyFound": "Already found",
     "notAWord": "Not a word",
     "notOnBoard": "Not on board",
     "scored": "+{{points}} {{word}}",
     "giveUp": "Give up / Next player",
-    "finish": "Finish game"
+    "finish": "Finish game",
+    "finishGame": "End game for everyone",
+    "finishConfirmTitle": "End the game?",
+    "finishConfirmBody": "This ends the match for all players and shows the results. Any remaining players will not get their turn.",
+    "finishConfirmYes": "End game",
+    "finishConfirmNo": "Cancel"
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -51,7 +61,11 @@
     "score": "Score",
     "noWords": "No words found.",
     "playAgain": "Play again",
-    "playerScore": "{{name}} — {{score}} pts"
+    "playerScore": "{{name}} — {{score}} pts",
+    "allWordsTitle": "All possible words",
+    "allWordsSummary": "{{found}}/{{total}} words found · {{points}} pts possible",
+    "allWordsLoading": "Solving the board…",
+    "allWordsEmpty": "No words can be made on this board."
   },
   "errors": {
     "dictLoadFailed": "Failed to load dictionary"

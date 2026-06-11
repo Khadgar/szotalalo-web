@@ -27,6 +27,7 @@ export interface GameConfig {
   size: number;
   timeLimit: TimeLimit;
   dictionary: DictLang;
+  minWordLength: number;
 }
 
 interface State {
@@ -58,6 +59,7 @@ interface State {
   addFoundWord: (w: string) => void;
   tickTimer: () => void;
   advancePlayer: () => void;
+  finishGame: () => void;
   resetGame: () => void;
 }
 
@@ -157,6 +159,9 @@ export const useStore = create<State>((set, get) => ({
         },
       };
     }),
+
+  finishGame: () =>
+    set((s) => ({ game: { ...s.game, status: 'finished' } })),
 
   resetGame: () =>
     set({
