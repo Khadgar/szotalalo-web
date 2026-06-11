@@ -90,9 +90,10 @@ export default function GameSetup() {
               key={idx}
               label={t('setup.playerLabel', { n: idx + 1 })}
               value={n}
-              onChange={(e) =>
-                setNames((prev) => prev.map((p, i) => (i === idx ? e.currentTarget.value : p)))
-              }
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                setNames((prev) => prev.map((p, i) => (i === idx ? value : p)));
+              }}
             />
           ))}
         </Stack>

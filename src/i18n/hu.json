@@ -51,7 +51,12 @@
     "finishConfirmTitle": "Biztosan befejezed?",
     "finishConfirmBody": "Ez minden játékos számára befejezi a meccset és megmutatja az eredményeket. A hátralévő játékosok nem kapnak kört.",
     "finishConfirmYes": "Befejezés",
-    "finishConfirmNo": "Mégse"
+    "finishConfirmNo": "Mégse",
+    "progressTitle": "Hátralévő szavak",
+    "progressEmpty": "Ezen a táblán nincs található szó.",
+    "progressOverall": "Összesen",
+    "progressLength": "{{len}} betűs",
+    "progressCount": "{{found}}/{{total}}"
   },
   "leaderboard": {
     "title": "Eredménytábla",

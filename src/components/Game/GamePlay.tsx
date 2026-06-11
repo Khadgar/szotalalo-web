@@ -31,9 +31,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../store';
 import Board from '../Board/Board';
-import { findPathForWord } from '../../game/solver';
+import { findPathForWord, findWords } from '../../game/solver';
 import { scoreWord, totalScore } from '../../game/scoring';
 import { useDict } from '../../dict/loadDict';
+
+const codepointLen = (w: string) => [...w].length;
 
 const fmt = (s: number) => {
   const m = Math.floor(s / 60);
@@ -74,6 +76,41 @@ export default function GamePlay() {
   const me = players[currentPlayer];
   const myWords = me?.words ?? [];
   const score = useMemo(() => totalScore(myWords), [myWords]);
+
+  const totalsByLength = useMemo(() => {
+    if (!dict || grid.length === 0 || !config) return null;
+    const minLen = config.minWordLength;
+    const counts = new Map<number, number>();
+    for (const w of findWords(grid, dict)) {
+      const len = codepointLen(w);
+      if (len < minLen) continue;
+      counts.set(len, (counts.get(len) ?? 0) + 1);
+    }
+    return counts;
+  }, [dict, grid, config]);
+
+  const foundByLength = useMemo(() => {
+    const counts = new Map<number, number>();
+    for (const w of myWords) {
+      const len = codepointLen(w);
+      counts.set(len, (counts.get(len) ?? 0) + 1);
+    }
+    return counts;
+  }, [myWords]);
+
+  const progressRows = useMemo(() => {
+    if (!totalsByLength) return [];
+    return [...totalsByLength.entries()]
+      .sort((a, b) => a[0] - b[0])
+      .map(([len, total]) => ({
+        len,
+        total,
+        found: Math.min(foundByLength.get(len) ?? 0, total),
+      }));
+  }, [totalsByLength, foundByLength]);
+
+  const totalFound = progressRows.reduce((s, r) => s + r.found, 0);
+  const totalPossible = progressRows.reduce((s, r) => s + r.total, 0);
 
   if (!config) return null;
 
@@ -162,6 +199,39 @@ export default function GamePlay() {
                 ))}
               </Group>
             </ScrollArea>
+          </Paper>
+          <Title order={5}>{t('play.progressTitle')}</Title>
+          <Paper p="sm" withBorder>
+            {progressRows.length === 0 ? (
+              <Text c="dimmed" size="sm">
+                {t('play.progressEmpty')}
+              </Text>
+            ) : (
+              <Stack gap="xs">
+                <Group justify="space-between">
+                  <Text size="sm" fw={500}>
+                    {t('play.progressOverall')}
+                  </Text>
+                  <Text size="sm" c="dimmed">
+                    {t('play.progressCount', { found: totalFound, total: totalPossible })}
+                  </Text>
+                </Group>
+                <Progress
+                  value={totalPossible === 0 ? 0 : (totalFound / totalPossible) * 100}
+                />
+                {progressRows.map(({ len, found, total }) => (
+                  <Stack key={len} gap={2}>
+                    <Group justify="space-between">
+                      <Text size="sm">{t('play.progressLength', { len })}</Text>
+                      <Text size="sm" c="dimmed">
+                        {t('play.progressCount', { found, total })}
+                      </Text>
+                    </Group>
+                    <Progress size="sm" value={total === 0 ? 0 : (found / total) * 100} />
+                  </Stack>
+                ))}
+              </Stack>
+            )}
           </Paper>
         </Stack>
       </SimpleGrid>
