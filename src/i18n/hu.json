@@ -1,0 +1,59 @@
+{
+  "common": {
+    "appTitle": "Szótaláló",
+    "solver": "Megfejtő",
+    "game": "Játék",
+    "language": "Nyelv",
+    "dictionary": "Szótár",
+    "dict.hu": "Magyar",
+    "dict.en": "Angol",
+    "theme.toggle": "Téma váltása"
+  },
+  "solver": {
+    "size": "Méret",
+    "solve": "Megfejtés",
+    "foundCount_one": "{{count}} szó",
+    "foundCount_other": "{{count}} szó",
+    "foundWords": "Talált szavak",
+    "letters": "{{count}} betűs",
+    "fillHint": "Töltsd ki a táblát és nyomd meg a Megfejtés gombot."
+  },
+  "setup": {
+    "title": "Játék beállítása",
+    "playerCount": "Játékosok száma",
+    "playerLabel": "{{n}}. játékos",
+    "gridSize": "Rács mérete",
+    "time": "Idő",
+    "min": "{{n}} perc",
+    "unlimited": "Korlátlan",
+    "dictionary": "Szótár",
+    "start": "Játék indítása"
+  },
+  "play": {
+    "playerOf": "{{name}} ({{current}}/{{total}})",
+    "score": "Pontszám: {{value}}",
+    "unlimitedTime": "Korlátlan idő",
+    "wordsFound": "Talált szavak",
+    "wordsHint": "Húzd végig az ujjad a betűkön, hogy szavakat alkoss.",
+    "tooShort": "Túl rövid",
+    "alreadyFound": "Már megvan",
+    "notAWord": "Nem szó",
+    "notOnBoard": "Nincs a táblán",
+    "scored": "+{{points}} {{word}}",
+    "giveUp": "Feladom / Következő játékos",
+    "finish": "Játék vége"
+  },
+  "leaderboard": {
+    "title": "Eredménytábla",
+    "rank": "#",
+    "player": "Játékos",
+    "words": "Szavak",
+    "score": "Pont",
+    "noWords": "Nincs talált szó.",
+    "playAgain": "Új játék",
+    "playerScore": "{{name}} — {{score}} pont"
+  },
+  "errors": {
+    "dictLoadFailed": "A szótár betöltése nem sikerült"
+  }
+}
